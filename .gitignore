@@ -11,3 +11,4 @@ license.txt
 bitpay_table.sql
 wp-cli.yml
 tests\php_input.txt
+.idea

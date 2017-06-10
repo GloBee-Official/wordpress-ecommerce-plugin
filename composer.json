@@ -5,11 +5,11 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/bitpay/php-bitpay-client.git"
+            "url": "https://github.com/GloBee-Official/php-bitpay-client.git"
         }
     ],
     "require": {
-        "bitpay/php-client": "dev-master@dev",
+        "paybee/php-client": "dev-master@dev",
         "fabpot/php-cs-fixer": "@stable",
         "phpunit/phpunit": "~3.7"
     },

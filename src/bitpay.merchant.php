@@ -34,14 +34,14 @@ if (true === file_exists($autoloader_param) &&
     require_once $autoloader_param;
     \Bitpay\Autoloader::register();
 } else {
-    debuglog('[Error] In Bitpay plugin: The BitPay payment plugin was not installed correctly or the files are corrupt.');
-    throw new \Exception('The BitPay payment plugin was not installed correctly or the files are corrupt. Please reinstall the plugin. If this message persists after a reinstall, contact support@bitpay.com with this message.');
+    debuglog('[Error] In GloBee plugin: The GloBee payment plugin was not installed correctly or the files are corrupt.');
+    throw new \Exception('The GloBee payment plugin was not installed correctly or the files are corrupt. Please reinstall the plugin. If this message persists after a reinstall, contact support@globee.com with this message.');
 }
 
 // Check version requirement dependencies
 if (false !== bitpay_requirements_check()) {
-    debuglog('[Error] In Bitpay plugin: The server does not meet the minimum requirements to use this plugin.');
-    throw new \Exception('Your server does not meet the minimum requirements to use the BitPay payment plugin. The requirements check returned this error message: ' . bitpay_requirements_check());
+    debuglog('[Error] In GloBee plugin: The server does not meet the minimum requirements to use this plugin.');
+    throw new \Exception('Your server does not meet the minimum requirements to use the GloBee payment plugin. The requirements check returned this error message: ' . bitpay_requirements_check());
 }
 
 // Load upgrade file
@@ -68,12 +68,12 @@ function bitpay_js_init()
 add_action('admin_enqueue_scripts', 'bitpay_js_init');
 
 $nzshpcrt_gateways[$num] = array(
-        'name'                                    => __('Bitcoin Payments by BitPay', 'wpsc'),
+        'name'                                    => __('Bitcoin Payments by GloBee', 'wpsc'),
         'api_version'                             => 1.0,
-        'image'                                   => WPSC_URL . '/wpsc-merchants/bitpay/assets/img/logo.png',
+        'image'                                   => WPSC_URL . '/wpsc-merchants/bitpay/assets/img/globee.png',
         'has_recurring_billing'                   => false,
         'wp_admin_cannot_cancel'                  => true,
-        'display_name'                            => __('Bitcoin', 'wpsc'),
+        'display_name'                            => __('GloBee', 'wpsc'),
         'user_defined_name[wpsc_merchant_bitpay]' => 'Bitcoin',
         'requirements'                            => array('php_version' => 5.4),
         'internalname'                            => 'wpsc_merchant_bitpay',
@@ -124,7 +124,7 @@ function create_table()
         dbDelta($sql);
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, bitpay.merchant.php::create_table() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, bitpay.merchant.php::create_table() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -148,7 +148,7 @@ function generate_keys()
         $sin->generate();
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, generate_keys() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, generate_keys() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 
@@ -174,7 +174,7 @@ function create_client($network, $public, $private)
         $client->setAdapter(new Bitpay\Client\Adapter\CurlAdapter());
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, create_client() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, create_client() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 
@@ -201,7 +201,7 @@ function pairing($pairing_code, $client, $sin)
 
     } catch (\Exception $e) {
         $error = $e->getMessage();
-        debuglog('[Error] In Bitpay plugin, pairing() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, pairing() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
 
         update_option('bitpay_error', $error);
 
@@ -258,7 +258,7 @@ function save_keys($token, $network, $private, $public, $sin)
         $wpdb->insert($table_name, $data);
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, save_keys() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, save_keys() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -274,7 +274,7 @@ function pair_and_get_token($pairing_code, $network)
         save_keys($token, $network, $private, $public, $sin);
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, pair_and_get_token() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, pair_and_get_token() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -305,7 +305,7 @@ function form_bitpay()
             $script      = '<script type="text/javascript">' . $load_script . '</script>';
             echo $script;
         } else {
-            debuglog('[Error] In Bitpay plugin, bitpay.merchant.php::form_bitpay(): The asset file bitpay.js is missing or not readable.');
+            debuglog('[Error] In GloBee plugin, bitpay.merchant.php::form_bitpay(): The asset file bitpay.js is missing or not readable.');
             throw new \Exception('An error occurred!  The asset file bitpay.js is missing or not readable.');
         }
 
@@ -382,7 +382,7 @@ function form_bitpay()
                         break;
                 }
             } else {
-                $in_use    = 'This token is not paired with BitPay any longer.';
+                $in_use    = 'This token is not paired with GloBee any longer.';
                 $use_color = '<font color="#FF0000">●</font>';
             }
 
@@ -419,7 +419,7 @@ function form_bitpay()
 
         if (count($tablerows) > 0) {
             $rows[] = array(
-                'API Tokens<br /><img src="' . WPSC_URL . '/wpsc-merchants/bitpay/assets/img/logo.png" />',
+                'API Tokens<br /><img src="' . WPSC_URL . '/wpsc-merchants/bitpay/assets/img/globee.png" />',
                 $row,
                 '</div>
                 <br /><input name="pairing_code" type="text" placeholder="Pairing Code" /><select name="network"><option value="Livenet">Live</option><option value="Testnet">Test</option></select><input id="generate_keys" type="submit" name="generate_keys" value="Generate" />',
@@ -467,7 +467,7 @@ function form_bitpay()
         $output .= '<tr>' .
                    '<td colspan="2">' .
                    '<p class="description">' .
-                   '<img src="' . WPSC_URL . '/wpsc-merchants/bitpay/assets/img/bitcoin.png" /><br /><strong>Have more questions? Need assistance? Please visit our website <a href="https://bitpay.com" target="_blank">https://bitpay.com</a> or send an email to <a href="mailto:support@bitpay.com" target="_blank">support@bitpay.com</a> for prompt attention. Thank you for choosing BItPay!</strong>' .
+                   '<img src="' . WPSC_URL . '/wpsc-merchants/bitpay/assets/img/globee.png" /><br /><strong>Have more questions? Need assistance? Please visit our website <a href="https://globee.com" target="_blank">https://globee.com</a> or send an email to <a href="mailto:support@globee.com" target="_blank">support@globee.com</a> for prompt attention. Thank you for choosing GloBee!</strong>' .
                    '</p>' .
                    '</td>' .
                    '</tr>' . "\n";
@@ -485,7 +485,7 @@ function form_bitpay()
         return $output;
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -505,14 +505,14 @@ function submit_bitpay()
                 pair_and_get_token($_POST['pairing_code'], $_POST['network']);
 
             } else {
-                debuglog('[Error] In Bitpay plugin, submit_bitpay(): Invalid pairing code.');
+                debuglog('[Error] In GloBee plugin, submit_bitpay(): Invalid pairing code.');
                 update_option('bitpay_error', "Invalid Pairing Code");
             }
         }
 
         // When Revoke_key button is pressed
         if (true === isset($_POST["revoke_key"])) {
-            debuglog('[Info] In Bitpay plugin, submit_bitpay(): Revoke_key button pressed.');
+            debuglog('[Info] In GloBee plugin, submit_bitpay(): Revoke_key button pressed.');
 
             // Delete the row that with id $_POST["revoke_key"]}
             $id = $_POST["revoke_key"];
@@ -532,7 +532,7 @@ function submit_bitpay()
 
         // When the Disable for all button is pressed
         if (true === isset($_POST["just_me"])) {
-            debuglog('[Info] In Bitpay plugin, submit_bitpay(): Disable for all button pressed.');
+            debuglog('[Info] In GloBee plugin, submit_bitpay(): Disable for all button pressed.');
 
             // Change enable_all to false where id is $_POST["just_me"]
             $id = $_POST["just_me"];
@@ -542,7 +542,7 @@ function submit_bitpay()
 
         // When the Enable for all button is pressed
         if (true === isset($_POST["enable_all"])) {
-            debuglog('[Info] In Bitpay plugin, submit_bitpay(): Enable for all button pressed.');
+            debuglog('[Info] In GloBee plugin, submit_bitpay(): Enable for all button pressed.');
 
             // Change enable_all to true
             // where id is $_POST["enable_all"]
@@ -553,7 +553,7 @@ function submit_bitpay()
 
         // When Use me button is pressed
         if (true === isset($_POST["in_use"])) {
-            debuglog('[Info] In Bitpay plugin, submit_bitpay(): Use me button pressed.');
+            debuglog('[Info] In GloBee plugin, submit_bitpay(): Use me button pressed.');
 
             $id = $_POST["in_use"];
 
@@ -587,7 +587,7 @@ function submit_bitpay()
         return true;
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -606,7 +606,7 @@ function gateway_bitpay($seperator, $sessionid)
         $is_a_token_paired = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "bitpay_keys WHERE `in_use` = 'true' AND `facade` = 'pos' LIMIT 1");
 
         if ($is_a_token_paired < 1) {
-            debuglog('[Error] In Bitpay plugin, bitpay.merchant.php::gateway_bitpay(): No tokens are paired so no transactions can be done!');
+            debuglog('[Error] In GloBee plugin, bitpay.merchant.php::gateway_bitpay(): No tokens are paired so no transactions can be done!');
             var_dump("Error Processing Transaction. Please try again later. If the problem persists, please contact us at " .get_option('admin_email'));
         }
 
@@ -832,7 +832,7 @@ function gateway_bitpay($seperator, $sessionid)
         try {
             $client->createInvoice($invoice);
         } catch (\Exception $e) {
-            debuglog('[Error] In Bitpay plugin, bitpay.merchant.php::gateway_bitpay(): Call to createInvoice() failed with the message: ' . $e->getMessage());
+            debuglog('[Error] In GloBee plugin, bitpay.merchant.php::gateway_bitpay(): Call to createInvoice() failed with the message: ' . $e->getMessage());
             var_dump("Error Processing Transaction. Please try again later. If the problem persists, please contact us at " .get_option('admin_email'));
             $transaction = false;
         }
@@ -848,7 +848,7 @@ function gateway_bitpay($seperator, $sessionid)
         exit();
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
+        debuglog('[Error] In GloBee plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '" .');
         throw $e;
     }
 }
@@ -1002,7 +1002,7 @@ function bitpay_callback()
                         $sql = "UPDATE `" . WPSC_TABLE_PURCHASE_LOGS . "` SET `processed`= '3' WHERE `sessionid`=" . $sessionid;
                         $wpdb->query($sql);
 
-                        $message = 'Your transaction is now complete! Thank you for using BitPay!';
+                        $message = 'Your transaction is now complete! Thank you for using GloBee!';
 
                         $sql = "UPDATE `" . WPSC_TABLE_PURCHASE_LOGS . "` SET `notes`= 'The transaction is now complete.' WHERE `sessionid`=" . $sessionid;
                         $wpdb->query($sql);
@@ -1024,7 +1024,7 @@ function bitpay_callback()
         }
 
     } catch (\Exception $e) {
-        debuglog('[Error] In Bitpay plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '".');
+        debuglog('[Error] In GloBee plugin, form_bitpay() function on line ' . $e->getLine() . ', with the error "' . $e->getMessage() . '".');
         throw $e;
     }
 }
@@ -1037,17 +1037,17 @@ function bitpay_requirements_check()
 
     // PHP 5.4+ required
     if (true === version_compare(PHP_VERSION, '5.4.0', '<')) {
-        $errors[] = 'Your PHP version is too old. The BitPay payment plugin requires PHP 5.4 or higher to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'Your PHP version is too old. The GloBee payment plugin requires PHP 5.4 or higher to function. Please contact your web server administrator for assistance.';
     }
 
     // Wordpress 3.9+ required
     if (true === version_compare($wp_version, '3.9', '<')) {
-        $errors[] = 'Your WordPress version is too old. The BitPay payment plugin requires Wordpress 3.9 or higher to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'Your WordPress version is too old. The GloBee payment plugin requires Wordpress 3.9 or higher to function. Please contact your web server administrator for assistance.';
     }
 
     // GMP or BCMath required
     if (false === extension_loaded('gmp') && false === extension_loaded('bcmath')) {
-        $errors[] = 'The BitPay payment plugin requires the GMP or BC Math extension for PHP in order to function. Please contact your web server administrator for assistance.';
+        $errors[] = 'The GloBee payment plugin requires the GMP or BC Math extension for PHP in order to function. Please contact your web server administrator for assistance.';
     }
 
     return (false === empty($errors)) ? implode("<br>\n", $errors) : false;
