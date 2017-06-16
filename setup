@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "Building BitPay Plugin Directory..."
+echo "Building GloBee Plugin Directory..."
 rm -rf wpsc-merchants
 mkdir wpsc-merchants
 mkdir wpsc-merchants/bitpay
